@@ -28,7 +28,12 @@ fn read_file(file_name: &str) -> String {
     }
 }
 
+fn swap_file(file_name: &str, content: &str) -> String {
+    let previous_content = read_file(file_name);
+    write_file(file_name, &content);
+    previous_content
+}
+
 fn main() {
-    write_file("test.dat", "this is a test sdf \n test");
-    println!("{}", read_file("test.dat"))
+    println!("{}", swap_file("test.dat", "This is new file data"))
 }
