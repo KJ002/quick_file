@@ -1,35 +1,43 @@
 use std::{fs::{write, read_to_string}, panic::panic_any};
 
-const BINARY_NAME: &str = env!("CARGO_BIN_NAME");
+pub struct ConfigManager {
+    pub name: String,
+    pub root_path: String
+}
 
-fn get_path(file_name: &str) -> String {
-    match std::env::consts::OS {
-        "linux" | "macos" => match std::env::var("HOME") {
-            Ok(x) => format!("{}/.{}/{}", x, BINARY_NAME, file_name),
-            Err(err) => panic_any(err),
-        },
-        "windows" => match std::env::var("APPDATA") {
-            Ok(x) => format!("{}/{}/{}", x, BINARY_NAME, file_name),
-            Err(err) => panic_any(err),
-        },
-        _ => unimplemented!(),
+impl ConfigManager {
+    pub fn new(name: String) -> Self {
+        Self {
+            name: name.clone(),
+            root_path: match std::env::consts::OS {
+                "linux" | "macos" => match std::env::var("HOME") {
+                    Ok(x) => format!("{}/.{}", x, name),
+                    Err(err) => panic_any(err),
+                },
+                "windows" => match std::env::var("APPDATA") {
+                    Ok(x) => format!("{}/{}", x, name),
+                    Err(err) => panic_any(err),
+                },
+                _ => unimplemented!(),
+            }
+        }
     }
-}
 
-fn write_file(file_name: &str, content: &str) {
-    write(get_path(file_name), content).unwrap()
-}
-
-fn read_file(file_name: &str) -> String {
-    let path = get_path(file_name);
-    match read_to_string(path) {
-        Ok(content) => content,
-        Err(err) => panic_any(err)
+    pub fn write(&self, file_name: &str, content: &str) {
+        write(format!("{}/{}", self.root_path, file_name), content).unwrap()
     }
-}
 
-fn swap_file(file_name: &str, content: &str) -> String {
-    let previous_content = read_file(file_name);
-    write_file(file_name, &content);
-    previous_content
+    pub fn read(&self, file_name: &str) -> String {
+        let path = format!("{}/{}", self.root_path, file_name);
+        match read_to_string(path) {
+            Ok(content) => content,
+            Err(err) => panic_any(err)
+        }
+    }
+
+    pub fn swap_file(&self, file_name: &str, content: &str) -> String {
+        let previous_content = self.read(file_name);
+        self.write(file_name, content);
+        previous_content
+    }
 }
