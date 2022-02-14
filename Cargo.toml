@@ -6,5 +6,6 @@ authors = ["James Butcher <jamesbutcter167@gmail.com>"]
 description = "Quickly store config data without worrying about the file path"
 repository = "https://github.com/KJ002/quick_file"
 license = "MIT"
+readme = "README.md"
 
 [dependencies]
