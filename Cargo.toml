@@ -2,7 +2,9 @@
 name = "quick_file"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["James Butcher <jamesbutcter167@gmail.com>"]
+description = "Quickly store config data without worrying about the file path"
+repository = "https://github.com/KJ002/quick_file"
+license = "MIT"
 
 [dependencies]
