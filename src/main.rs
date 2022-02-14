@@ -1,4 +1,4 @@
-use std::{fs::{File, read_to_string}, io::Write, panic::panic_any};
+use std::{fs::{write, read_to_string}, panic::panic_any};
 
 const BINARY_NAME: &str = env!("CARGO_BIN_NAME");
 
@@ -16,21 +16,19 @@ fn get_path(file_name: &str) -> String {
     }
 }
 
-fn get_file(file_name: &str) -> File {
-    let path = get_path(file_name);
+fn write_file(file_name: &str, content: &str) {
+    write(get_path(file_name), content).unwrap()
+}
 
-    match File::open(&path) {
-        Ok(handle) => handle,
-        Err(_) => File::create(path).expect("Could not create file."),
+fn read_file(file_name: &str) -> String {
+    let path = get_path(file_name);
+    match read_to_string(path) {
+        Ok(content) => content,
+        Err(err) => panic_any(err)
     }
 }
 
-fn write_file(file_name: &str, content: String) -> std::io::Result<usize> {
-    let buffer: &[u8] = content.as_bytes();
-    get_file(file_name).write(buffer)
-}
-
 fn main() {
-    get_file("test.dat");
-    println!("Hello, world!");
+    write_file("test.dat", "this is a test sdf \n test");
+    println!("{}", read_file("test.dat"))
 }
