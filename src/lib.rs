@@ -33,7 +33,3 @@ fn swap_file(file_name: &str, content: &str) -> String {
     write_file(file_name, &content);
     previous_content
 }
-
-fn main() {
-    println!("{}", swap_file("test.dat", "This is new file data"))
-}
