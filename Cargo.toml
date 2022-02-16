@@ -1,6 +1,6 @@
 [package]
 name = "quick_file"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["James Butcher <jamesbutcter167@gmail.com>"]
 description = "Quickly read and write to files without needing to worry about file paths and operating systems"
