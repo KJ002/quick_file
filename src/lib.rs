@@ -8,7 +8,7 @@ pub struct ConfigManager {
 }
 
 impl ConfigManager {
-    pub fn new(name: String) -> Self {
+    pub fn new(name: &str) -> Self {
         Self {
             root_path: match std::env::consts::OS {
                 "linux" | "macos" => match std::env::var("HOME") {
